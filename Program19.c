@@ -1,29 +1,37 @@
+#define _POSIX_SOURCE
+#define _POSIX_C_SOURCE 199309L
 #include<stdio.h>
-#include<sys/types.h>
 #include<unistd.h>
-#include<string.h>
+int main()
+{
+#ifdef _POSIX_JOB_CONTROL
+printf("System supports job control\n");
+#else
+printf("System does not support job control \n");
+#endif
 
-int main(int argc,char* argv[])
-{
-if(argc<3|| argc>4||(argc==4 && strcmp(argv[1],"-s")))
-{
- printf("usage :./a.out [-s] <org_file> <new_link>\n ");
- return 1;
-}
+#ifdef _POSIX_SAVED_IDS
+printf("System supports saved set-UID and saved set-GID\n");
+#else
+printf("System does not support saved set-UID and saved set-GID \n");
+#endif
 
-if(argc==4)
-{
-if(symlink(argv[2],argv[3])==-1)
-printf("cannot create symbolic link\n");
-else
-printf("Symbolic link created\n");
-}
-else
-{
-if(link(argv[1],argv[2])==-1)
-printf("cannot create hard link\n");
-else
-printf("hard link created \n");
-}
+#ifdef _POSIX_CHOWN_RESTRICTED
+printf("chown_restricted option is %d\n",_POSIX_CHOWN_RESTRICTED);
+#else
+printf("System does not support chown_restricted option \n");
+#endif
+#ifdef _POSIX_NO_TRUNC
+printf("Pathname trunc option is %d\n",_POSIX_NO_TRUNC);
+#else
+printf("System does not support system-wide pathname trunc option \n");
+#endif
+
+#ifdef _POSIX_VDISABLE
+printf("Disable character for terminal files is %d\n",_POSIX_VDISABLE);
+#else
+printf(" System does not support POSIX_VDISABLE \n");
+#endif
+
 return 0;
 }
